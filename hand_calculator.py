@@ -1,5 +1,5 @@
 from enums import Ranks
-from card import Card
+from models.card import Card
 from hand_checks import check_straight, check_flush, count_repeats
 
 hand = []
