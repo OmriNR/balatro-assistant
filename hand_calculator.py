@@ -1,52 +1,52 @@
-from enums import Ranks
-from models.card import Card
-from hand_checks import check_straight, check_flush, count_repeats
+def check_hand(hand):
+    hand.sort(key=lambda x: x.value)  # Sort hand by value
 
-hand = []
+    # Check straight
+    is_straight = check_straight(hand)
+    is_flush = check_flush(hand)
 
-while len(hand) < 5:
-    value = input('Enter card value (2-10, J, Q, K, A): ')
-
-    if (value.isdigit() and 2 <= int(value) <= 10) or value in ['J', 'Q', 'K', 'A']:
-        if value.isdigit():
-            value = int(value)
-        else:
-            value = {'J': 11, 'Q': 12, 'K': 13, 'A': 14}[value]
-
-    rank_input = input('Enter card rank (Hearth, Spade, Diamond, Club): ')
-    
-    try:
-        rank = Ranks[rank_input]
-        card = Card(value, rank)
-        hand.append(card)
-    except KeyError:
-        print('Invalid rank. Please try again.')
-
-
-#Check the hand type
-hand.sort(key=lambda x: x.value)  # Sort hand by value
-
-# Check straight
-is_straight = check_straight(hand)
-is_flush = check_flush(hand)
-
-if is_straight and is_flush:
-    print('You have a Straight Flush!')
-elif is_flush and not is_straight:
-    print('You have a Flush!')
-elif is_straight and not is_flush:
-    print('You have a Straight!')
-else:
-    repeats = count_repeats(hand)
-    if 4 in repeats.values():
-        print('You have Four of a Kind!')
-    elif 3 in repeats.values() and 2 in repeats.values():
-        print('You have a Full House!')
-    elif 3 in repeats.values():
-        print('You have Three of a Kind!')
-    elif list(repeats.values()).count(2) == 2:
-        print('You have Two Pair!')
-    elif 2 in repeats.values():
-        print('You have One Pair!')
+    if is_straight and is_flush:
+        return 'straight_flush'
+    elif is_flush and not is_straight:
+        return 'flush'
+    elif is_straight and not is_flush:
+        return 'straight'
     else:
-        print('You have a High Card!')
+        repeats = count_repeats(hand)
+        if 4 in repeats.values():
+            return 'four_kind'
+        elif 3 in repeats.values() and 2 in repeats.values():
+            return 'full_house'
+        elif 3 in repeats.values():
+            return 'three_kind'
+        elif list(repeats.values()).count(2) == 2:
+            return 'two_pair'
+        elif 2 in repeats.values():
+            return 'pair'
+        else:
+            return 'high_card'
+
+
+def check_straight(hand):
+    hand.sort(key=lambda x: x.value)  # Sort hand by value
+    for i in range(0, len(hand) - 1):
+        if hand[i].value + 1 != hand[i + 1].value:
+            return False
+    return True
+
+
+def check_flush(hand):
+    first_rank = hand[0].rank
+    for card in hand:
+        if card.rank != first_rank:
+            return False
+    return True
+
+def count_repeats(hand):
+    value_counts = {}
+    for card in hand:
+        if card.value in value_counts:
+            value_counts[card.value] += 1
+        else:
+            value_counts[card.value] = 1
+    return value_counts

@@ -1,17 +1,17 @@
-from models import score
+from models import Score
 
 
 def calculate_score_of_hand(hand, type):
     hands_scores = {
-        "high_card": score(10,1),
-        "pair": score(10,2),
-        "two_pair": score(20,2),
-        "three_kind": score(30,3),
-        "staright": score(30,4),
-        "flush": score(35,4),
-        "full_house": score(40,4),
-        "four_kind": score(60,7),
-        "straight_flush": score(100,8)
+        "high_card": Score(10,1),
+        "pair": Score(10,2),
+        "two_pair": Score(20,2),
+        "three_kind": Score(30,3),
+        "staright": Score(30,4),
+        "flush": Score(35,4),
+        "full_house": Score(40,4),
+        "four_kind": Score(60,7),
+        "straight_flush": Score(100,8)
     }
 
     chips = hands_scores[type].chips
