@@ -1,30 +1,32 @@
+from models import Hand
+
 def check_hand(hand):
     hand.sort(key=lambda x: x.value)  # Sort hand by value
-
     # Check straight
     is_straight = check_straight(hand)
     is_flush = check_flush(hand)
 
     if is_straight and is_flush:
-        return 'straight_flush'
+        value = Hand(hand, 'straight_flush')
     elif is_flush and not is_straight:
-        return 'flush'
+        value = Hand(hand, 'flush')
     elif is_straight and not is_flush:
-        return 'straight'
+        value = Hand(hand, 'straight')
     else:
         repeats = count_repeats(hand)
         if 4 in repeats.values():
-            return 'four_kind'
+            value = Hand([card for card in hand if repeats[card.value] == 4], 'four_kind')
         elif 3 in repeats.values() and 2 in repeats.values():
-            return 'full_house'
+            value.type = 'full_house'
         elif 3 in repeats.values():
-            return 'three_kind'
+            value = Hand([card for card in hand if repeats[card.value] == 3], 'three_kind')
         elif list(repeats.values()).count(2) == 2:
-            return 'two_pair'
+            value = Hand([card for card in hand if repeats[card.value] == 2], 'two_pair')
         elif 2 in repeats.values():
-            return 'pair'
+            value = Hand([card for card in hand if repeats[card.value] == 2], 'pair')
         else:
-            return 'high_card'
+            value = Hand([max(card.value for card in hand)], 'high_card')
+    return value;
 
 
 def check_straight(hand):
