@@ -1,5 +1,3 @@
-from models import Hand
-
 def check_hand(hand):
     hand.sort(key=lambda x: x.value)  # Sort hand by value
     # Check straight
@@ -7,25 +5,25 @@ def check_hand(hand):
     is_flush = check_flush(hand)
 
     if is_straight and is_flush:
-        value = Hand(hand, 'straight_flush')
+        return hand, 'straight_flush'
     elif is_flush and not is_straight:
-        value = Hand(hand, 'flush')
+        return hand, 'flush'
     elif is_straight and not is_flush:
-        value = Hand(hand, 'straight')
+        return hand, 'straight'
     else:
         repeats = count_repeats(hand)
         if 4 in repeats.values():
-            value = Hand([card for card in hand if repeats[card.value] == 4], 'four_kind')
+            return [card for card in hand if repeats[card.value] == 4], 'four_kind'
         elif 3 in repeats.values() and 2 in repeats.values():
-            value.type = 'full_house'
+            return hand, 'full_house'
         elif 3 in repeats.values():
-            value = Hand([card for card in hand if repeats[card.value] == 3], 'three_kind')
+            return [card for card in hand if repeats[card.value] == 3], 'three_kind'
         elif list(repeats.values()).count(2) == 2:
-            value = Hand([card for card in hand if repeats[card.value] == 2], 'two_pair')
+            return [card for card in hand if repeats[card.value] == 2], 'two_pair'
         elif 2 in repeats.values():
-            value = Hand([card for card in hand if repeats[card.value] == 2], 'pair')
+            return [card for card in hand if repeats[card.value] == 2], 'pair'
         else:
-            value = Hand([max(card.value for card in hand)], 'high_card')
+            return [max(card.value for card in hand)], 'high_card'
     return value;
 
 

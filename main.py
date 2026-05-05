@@ -23,7 +23,7 @@ while len(hand) < 5:
     except KeyError:
         print('Invalid rank. Please try again.')
 
-hand_check = check_hand(hand);
-score = calculate_score_of_hand(hand_check.hand, hand_check.type)
+checked_hand, hand_type = check_hand(hand);
+score = calculate_score_of_hand(checked_hand, hand_type)
 
 print("Your hand score: ", score)
