@@ -1,3 +1,4 @@
+from operator import attrgetter
 def check_hand(hand):
     hand.sort(key=lambda x: x.value)  # Sort hand by value
     # Check straight
@@ -23,8 +24,7 @@ def check_hand(hand):
         elif 2 in repeats.values():
             return [card for card in hand if repeats[card.value] == 2], 'pair'
         else:
-            return [max(card.value for card in hand)], 'high_card'
-    return value;
+            return [max(hand, key=attrgetter('value'))], 'high_card'
 
 
 def check_straight(hand):
