@@ -14,8 +14,7 @@ def calculate_score_of_hand(hand, type):
         "straight_flush": Score(100,8)
     }
 
-    chips = hands_scores[type].chips
-    mult = hands_scores[type].mult
+    score : Score = hands_scores[type]
 
     for card in hand:
         if (card.value <= 10):
@@ -24,5 +23,17 @@ def calculate_score_of_hand(hand, type):
             chips += 10
         else:
             chips += 11
+        
+        score = apply_card_effect(card, score)
+        
+    return score.total()
 
-    return chips * mult
+def apply_card_effect(card, base_score):
+    if card.enchantment == 'Bonus':
+        base_score.chips += 30
+    elif card.enchantment == 'Mult':
+        base_score += 4
+    elif card.enchantment == "Glass":
+        base_score.mult *= 2
+        
+    return base_score

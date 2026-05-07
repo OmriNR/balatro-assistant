@@ -16,10 +16,14 @@ while len(hand) < 8:
     
     try:
         rank = Ranks[rank_input]
-        card = Card(value, rank)
-        hand.append(card)
     except KeyError:
         print('Invalid rank. Please try again.')
+
+    enchantment_input = input('Enter card input (Bonus, Mult, Glass), else no enchantment')
+
+    card = Card(value, rank, enchantment_input)
+    hand.append(card)
+    
 
 
 highest_score, best_hand = find_best_hand(hand)
