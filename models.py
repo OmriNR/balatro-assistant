@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+from typing import Callable
+
 class Card:
     def __init__(self, value, rank, enhancement):
         self.value = value
@@ -18,3 +21,15 @@ class Score:
 class Effect:
     def __init__(self, ):
         pass
+
+@dataclass
+class JokerContext:
+    hand_type: str
+    scored_cards: list
+    full_hand: list
+
+
+@dataclass
+class Joker:
+    name: str
+    apply: Callable[['Score', 'JokerContext'], 'Score']
