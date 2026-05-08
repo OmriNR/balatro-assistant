@@ -1,6 +1,8 @@
 from enums import Ranks
 from models import Card
 from best_hand_calculator import find_best_hand
+from jokers import AVAILABLE_JOKERS
+
 hand = []
 
 while len(hand) < 8:
@@ -12,23 +14,40 @@ while len(hand) < 8:
         else:
             value = {'J': 11, 'Q': 12, 'K': 13, 'A': 14}[value]
 
-    rank_input = input('Enter card rank (Hearth, Spade, Diamond, Club): ')
-    
+    rank_input = input('Enter card suit (Hearth, Spade, Diamond, Club): ')
+
     try:
         rank = Ranks[rank_input]
     except KeyError:
-        print('Invalid rank. Please try again.')
+        print('Invalid suit. Please try again.')
+        continue
 
-    enchantment_input = input('Enter card input (Bonus, Mult, Glass), else no enchantment')
+    enhancement_input = input('Enter card enhancement (Bonus, Mult, Glass), or press Enter for none: ').strip()
 
-    card = Card(value, rank, enchantment_input)
+    card = Card(value, rank, enhancement_input)
     hand.append(card)
-    
 
 
-highest_score, best_hand = find_best_hand(hand)
+print('\nAvailable jokers:')
+for name in AVAILABLE_JOKERS:
+    print(f'  - {name}')
 
-print('The best hand:')
+jokers = []
+print('\nEnter your jokers (press Enter with no input when done):')
+while True:
+    joker_input = input('Joker name: ').strip()
+    if not joker_input:
+        break
+    if joker_input in AVAILABLE_JOKERS:
+        jokers.append(AVAILABLE_JOKERS[joker_input])
+        print(f'Added: {joker_input}')
+    else:
+        print(f'Unknown joker: "{joker_input}". Check spelling and try again.')
+
+
+highest_score, best_hand = find_best_hand(hand, jokers)
+
+print('\nThe best hand:')
 for card in best_hand:
     print(card.__str__())
 
