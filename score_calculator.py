@@ -25,7 +25,6 @@ def calculate_score_of_hand(hand, type, jokers=None, full_hand=None):
             score.chips += 10
         else:
             score.chips += 11
-        score = apply_card_effect(card, score)
 
     if jokers:
         context = JokerContext(
@@ -36,13 +35,3 @@ def calculate_score_of_hand(hand, type, jokers=None, full_hand=None):
         score = apply_jokers(score, jokers, context)
 
     return score.total()
-
-
-def apply_card_effect(card, base_score):
-    if card.enhancement == 'Bonus':
-        base_score.chips += 30
-    elif card.enhancement == 'Mult':
-        base_score.mult += 4
-    elif card.enhancement == 'Glass':
-        base_score.mult *= 2
-    return base_score
