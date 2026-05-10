@@ -1,36 +1,7 @@
 from enums import Ranks
 from models import Card
-from best_hand_calculator import find_best_hand
+from best_hand_calculator import find_best_hand, find_best_hand_deck
 from jokers import AVAILABLE_JOKERS
-
-hand = []
-
-while len(hand) < 8:
-    value = input('Enter card value (2-10, J, Q, K, A): ')
-
-    if (value.isdigit() and 2 <= int(value) <= 10) or value in ['J', 'Q', 'K', 'A']:
-        if value.isdigit():
-            value = int(value)
-        else:
-            value = {'J': 11, 'Q': 12, 'K': 13, 'A': 14}[value]
-
-    rank_input = input('Enter card suit (Hearth, Spade, Diamond, Club): ')
-
-    try:
-        rank = Ranks[rank_input]
-    except KeyError:
-        print('Invalid suit. Please try again.')
-        continue
-
-    enhancement_input = input('Enter card enhancement (Bonus, Mult, Glass), or press Enter for none: ').strip()
-
-    card = Card(value, rank, enhancement_input)
-    hand.append(card)
-
-
-print('\nAvailable jokers:')
-for name in AVAILABLE_JOKERS:
-    print(f'  - {name}')
 
 jokers = []
 print('\nEnter your jokers (press Enter with no input when done):')
@@ -45,10 +16,38 @@ while True:
         print(f'Unknown joker: "{joker_input}". Check spelling and try again.')
 
 
-highest_score, best_hand = find_best_hand(hand, jokers)
+print('What do you want to calculate: best hand for round or best hand in deck?')
+option_input = input('Enter ROUND for best hand round, otherwise for deck: ')
+
+if (option_input == 'ROUND'):
+    hand = []
+    while len(hand) < 8:
+        value = input('Enter card value (2-10, J, Q, K, A): ')
+
+        if (value.isdigit() and 2 <- int(value <= 10) or value in ['J', 'Q', 'K', 'A']):
+            if value.isdigit():
+                value = int(value)
+            else:
+                value = {'J': 11, 'Q': 12, 'K': 13, 'A': 14}[value]
+        
+        rank_input = input('Enter card suit (Hearth, Spade, Diamond, Club): ')
+
+        try:
+            rank = Ranks[rank_input]
+        except KeyError:
+            print('Invalid suit. Please try again.')
+            continue
+
+        card = Card(value, rank)
+        hand.append(card)
+
+    highest_score, best_hand = find_best_hand(hand, jokers)
+else:
+    highest_score, best_hand = find_best_hand_deck(jokers)
 
 print('\nThe best hand:')
 for card in best_hand:
-    print(card.__str__())
+     print(card.__str__())
 
 print(f'The highest score: {highest_score}')
+

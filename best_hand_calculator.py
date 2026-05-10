@@ -17,3 +17,6 @@ def find_best_hand(cards, jokers=None):
             highest_score = current_score
 
     return highest_score, best_combination
+
+def find_best_hand_deck(jokers=None):
+    return
