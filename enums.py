@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Ranks(Enum):
-    Hearth = 1
-    Spade = 2
-    Diamond = 3
-    Club = 4
+    Hearth = 0
+    Spade = 1
+    Diamond = 2
+    Club = 3

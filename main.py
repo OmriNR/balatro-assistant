@@ -42,12 +42,17 @@ if (option_input == 'ROUND'):
         hand.append(card)
 
     highest_score, best_hand = find_best_hand(hand, jokers)
+    print('\nThe best hand:')
+    for card in best_hand:
+        print(card.__str__())
+
+    print(f'The highest score: {highest_score}')
 else:
-    highest_score, best_hand = find_best_hand_deck(jokers)
+    all_sf_hands = find_best_hand_deck(jokers)
 
-print('\nThe best hand:')
-for card in best_hand:
-     print(card.__str__())
+    print('All straight flushes: ')
 
-print(f'The highest score: {highest_score}')
-
+    for i in range(len(all_sf_hands)):
+        print('\nStraight flush #', i+1)
+        for card in all_sf_hands[i]:
+            print(card.__str__())
