@@ -48,11 +48,12 @@ if (option_input == 'ROUND'):
 
     print(f'The highest score: {highest_score}')
 else:
-    all_sf_hands = find_best_hand_deck(jokers)
+    hand_type = input('Enter poker hand type: ')
+    all_hands_by_type = find_best_hand_deck(hand_type)
 
-    print('All straight flushes: ')
+    print('All ' + hand_type + ' possible hands:')
 
-    for i in range(len(all_sf_hands)):
-        print('\nStraight flush #', i+1)
-        for card in all_sf_hands[i]:
+    for i in range(len(all_hands_by_type)):
+        print(hand_type + ' #', i+1)
+        for card in all_hands_by_type[i]:
             print(card.__str__())

@@ -1,7 +1,7 @@
 import itertools
 from score_calculator import calculate_score_of_hand
 from hand_calculator import check_hand
-from search_whole_deck import find_all_straight_flushes
+from search_whole_deck import find_straight_flush_or_both
 
 def find_best_hand(cards, jokers=None):
     all_combinations = [list(combo) for combo in itertools.combinations(cards, 5)]
@@ -18,6 +18,8 @@ def find_best_hand(cards, jokers=None):
 
     return highest_score, best_combination
 
-def find_best_hand_deck(jokers=None):
-    all_sf_hands = find_all_straight_flushes()
-    return all_sf_hands
+def find_best_hand_deck(handType):
+
+    all_hands_by_type = find_straight_flush_or_both(handType)
+
+    return all_hands_by_type

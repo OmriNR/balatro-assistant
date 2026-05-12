@@ -12,7 +12,7 @@ hands_matrix = np.fromiter(
     dtype=np.uint8
 ).reshape(-1,5)
 
-def find_all_straight_flushes():
+def find_straight_flush_or_both(type):
     suits_in_hand = suit_lookup[hands_matrix]
 
     #find all flushes
@@ -26,16 +26,21 @@ def find_all_straight_flushes():
     is_ace_low = np.all(values_sorted == [2,3,4,5,14], axis=1)
     is_straight = is_straight|is_ace_low
 
-    is_straight_flush = is_straight & is_flush
+    if type == 'straight':
+        is_requested = is_straight & ~is_flush
+    elif type == 'flush':
+        is_requested = is_flush & ~is_straight
+    else:
+        is_requested = is_straight & is_flush
 
-    sf_indices = np.where(is_straight_flush)[0]
-    sf_rows = hands_matrix[sf_indices]
+    requested_indices = np.where(is_requested)[0]
+    requested_rows = hands_matrix[requested_indices]
 
-    all_sf_hands = []
+    all_requested_hands = []
 
-    for row in sf_rows:
+    for row in requested_rows:
         hand_objects = [Card.from_id(card_id) for card_id in row]
-        all_sf_hands.append(hand_objects)
+        all_requested_hands.append(hand_objects)
     
-    return all_sf_hands
+    return all_requested_hands
 
