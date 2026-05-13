@@ -45,15 +45,12 @@ def find_straight_flush_or_both(type):
     return all_requested_hands
 
 def find_four_of_a_kind():
-    suits_in_hand = suit_lookup[hands_matrix]
-
-    is_flush = np.all(suits_in_hand[:, 1:] == suits_in_hand[:, :1], axis=1)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
 
     case_1 = (values_sorted[:, 0] == values_sorted[:, 3])
     case_2 = (values_sorted[:, 1] == values_sorted[:, 4])
 
-    is_four = (case_1 | case_2) & ~is_flush
+    is_four = (case_1 | case_2)
 
     four_incides = np.where(is_four)[0]
     four_rows = hands_matrix[four_incides]
