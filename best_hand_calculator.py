@@ -1,7 +1,7 @@
 import itertools
 from score_calculator import calculate_score_of_hand
 from hand_calculator import check_hand
-from search_whole_deck import find_straight_flush_or_both, find_four_of_a_kind
+from search_whole_deck import find_straight_flush_or_both, find_four_of_a_kind, find_full_house, find_three_of_a_kind, find_two_pair, find_high_card, find_pair
 
 def find_best_hand(cards, jokers=None):
     all_combinations = [list(combo) for combo in itertools.combinations(cards, 5)]
@@ -21,6 +21,16 @@ def find_best_hand(cards, jokers=None):
 def find_best_hand_deck(handType):
     if handType == 'four_of_a_kind':
         all_hands_by_type = find_four_of_a_kind()
+    elif handType == 'full_house':
+        all_hands_by_type = find_full_house()
+    elif handType == 'three_of_a_kind':
+        all_hands_by_type = find_three_of_a_kind()
+    elif handType == 'two_pair':
+        all_hands_by_type = find_two_pair()
+    elif handType == 'pair':
+        all_hands_by_type = find_pair()
+    elif handType == 'high_card':
+        all_hands_by_type = find_high_card()
     else:
         all_hands_by_type = find_straight_flush_or_both(handType)
 
