@@ -7,12 +7,8 @@ all_combos_gen = itertools.combinations(range(52), 5)
 suit_lookup = np.repeat(np.arange(4), 13) #[0, 0, ..., 0, 1, 1, ..., 1, 2, 2, ..., 2, 3, 3, ..., 3]
 rank_lookup = np.tile(np.arange(2, 15), 4) #[2, 3, 4, ..., 14, 2, 3, 4, ..., 14, 2, 3, 4, ..., 14, 2, 3, 4, ..., 14]
 
-hands_matrix = np.fromiter(
-    (item for combo in all_combos_gen for item in combo),
-    dtype=np.uint8
-).reshape(-1,5)
-
-def find_straight_flush_or_both(type):
+def find_straight_flush_or_both(cards, type):
+    hands_matrix = generate_matrix_from_cards(cards)
     suits_in_hand = suit_lookup[hands_matrix]
 
     #find all flushes
@@ -38,7 +34,8 @@ def find_straight_flush_or_both(type):
 
     return create_cards(requested_rows)
 
-def find_four_of_a_kind():
+def find_four_of_a_kind(cards):
+    hands_matrix = generate_matrix_from_cards(cards)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
 
     case_1 = (values_sorted[:, 0] == values_sorted[:, 3])
@@ -51,7 +48,8 @@ def find_four_of_a_kind():
 
     return create_cards(four_rows)
 
-def find_full_house():
+def find_full_house(cards):
+    hands_matrix = generate_matrix_from_cards(cards)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
 
     fh_case_1 = (values_sorted[:, 0] == values_sorted[:, 1]) & \
@@ -67,7 +65,8 @@ def find_full_house():
 
     return create_cards(full_house_rows)
 
-def find_three_of_a_kind():
+def find_three_of_a_kind(cards):
+    hands_matrix = generate_matrix_from_cards(cards)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
     
     fh_case_1 = (values_sorted[:, 0] == values_sorted[:, 1]) & \
@@ -93,7 +92,8 @@ def find_three_of_a_kind():
 
     return create_cards(three_rows)
 
-def find_two_pair():
+def find_two_pair(cards):
+    hands_matrix = generate_matrix_from_cards(cards)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
 
     adj_equals = values_sorted[:, :-1] == values_sorted[:, 1:]
@@ -124,7 +124,8 @@ def find_two_pair():
 
     return create_cards(two_pair_rows)
 
-def find_pair():
+def find_pair(cards):
+    hands_matrix = generate_matrix_from_cards(cards)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
 
     adj_equals = values_sorted[:, :-1] == values_sorted[:, 1:]
@@ -137,7 +138,8 @@ def find_pair():
 
     return create_cards(pair_rows)
 
-def find_high_card():
+def find_high_card(cards):
+    hands_matrix = generate_matrix_from_cards(cards)
     values_sorted = np.sort(rank_lookup[hands_matrix], axis=1)
     suits_in_hand = suit_lookup[hands_matrix]
 
@@ -169,3 +171,12 @@ def create_cards(rows):
         all_hands.append(hands_objects)
         
     return all_hands
+
+def generate_matrix_from_cards(cards):
+    cards_ids = [card.id for card in cards]
+
+    hand_combos = list(itertools.combinations(cards_ids, 5))
+
+    matrix = np.array(hand_combos, dtype=np.uint8)
+
+    return matrix
