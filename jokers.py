@@ -36,14 +36,14 @@ def hand_type_chips_joker(name: str, hand_type: str, chips: int) -> Joker:
 
 def per_suit_mult_joker(name: str, suit: Ranks, mult_per_card: int) -> Joker:
     def apply(score, ctx):
-        count = sum(1 for card in ctx.scored_cards if card.rank == suit)
+        count = sum(1 for card in ctx.scored_cards if card.suit == suit)
         return Score(score.chips, score.mult + count * mult_per_card)
     return Joker(name=name, apply=apply)
 
 
 def per_suit_chips_joker(name: str, suit: Ranks, chips_per_card: int) -> Joker:
     def apply(score, ctx):
-        count = sum(1 for card in ctx.scored_cards if card.rank == suit)
+        count = sum(1 for card in ctx.scored_cards if card.suit == suit)
         return Score(score.chips + count * chips_per_card, score.mult)
     return Joker(name=name, apply=apply)
 

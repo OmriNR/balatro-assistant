@@ -36,9 +36,9 @@ def check_straight(hand):
 
 
 def check_flush(hand):
-    first_rank = hand[0].rank
+    first_suit = hand[0].suit
     for card in hand:
-        if card.rank != first_rank:
+        if card.suit != first_suit:
             return False
     return True
 

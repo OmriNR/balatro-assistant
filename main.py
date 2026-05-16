@@ -1,6 +1,6 @@
 from enums import Ranks
 from models import Card
-from best_hand_calculator import find_best_hand, find_best_hand_deck
+from best_hand_calculator import find_best_hand, find_best_hand_deck, find_best_hand_from_deck
 from jokers import AVAILABLE_JOKERS
 
 jokers = []
@@ -48,12 +48,8 @@ if (option_input == 'ROUND'):
 
     print(f'The highest score: {highest_score}')
 else:
-    hand_type = input('Enter poker hand type: ')
-    all_hands_by_type = find_best_hand_deck(hand_type)
-
-    print('All ' + hand_type + ' possible hands:')
-
-    for i in range(len(all_hands_by_type)):
-        print(hand_type + ' #', i+1)
-        for card in all_hands_by_type[i]:
-            print(card.__str__())
+    highest_score, best_hand = find_best_hand_from_deck(jokers)
+    print('\nThe best hand in the deck:')
+    for card in best_hand:
+        print(card.__str__())
+    print(f'The highest score: {highest_score}')
