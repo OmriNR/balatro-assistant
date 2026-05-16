@@ -8,7 +8,48 @@ deck = []
 for s in range(4):
     for v in range(2, 15):
         deck.append(Card(v,s))
+
+# Priority order from highest to lowest base score
+_HAND_TYPES_BY_PRIORITY = [
+    'straight_flush', 'four_kind', 'full_house', 'flush',
+    'straight', 'three_kind', 'two_pair', 'pair', 'high_card'
+]
+
+# Maps score_calculator type names to find_best_hand_deck search type names
+_SCORE_TO_SEARCH_TYPE = {
+    'straight_flush': 'straight_flush',
+    'four_kind': 'four_of_a_kind',
+    'full_house': 'full_house',
+    'flush': 'flush',
+    'straight': 'straight',
+    'three_kind': 'three_of_a_kind',
+    'two_pair': 'two_pair',
+    'pair': 'pair',
+    'high_card': 'high_card',
+}
     
+def _best_hand_type_for_jokers(jokers):
+    dummy = [Card(7, 0)] * 5
+    return max(
+        _HAND_TYPES_BY_PRIORITY,
+        key=lambda t: calculate_score_of_hand(dummy, t, jokers, full_hand=dummy)
+    )
+
+def find_best_hand_from_deck(jokers=None):
+    best_type = _best_hand_type_for_jokers(jokers)
+    all_hands = find_best_hand_deck(_SCORE_TO_SEARCH_TYPE[best_type])
+
+    highest_score = 0
+    best_hand = None
+    for hand in all_hands:
+        scored_cards, hand_type = check_hand(hand)
+        score = calculate_score_of_hand(scored_cards, hand_type, jokers, full_hand=hand)
+        if score > highest_score:
+            highest_score = score
+            best_hand = scored_cards
+
+    return highest_score, best_hand
+
 def find_best_hand(cards, jokers=None):
     all_combinations = [list(combo) for combo in itertools.combinations(cards, 5)]
 

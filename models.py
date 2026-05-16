@@ -14,8 +14,8 @@ class Card:
     
     @staticmethod
     def from_id(self):
-        suit = self // 13
-        value = self % 13 + 2
+        suit = int(self // 13)
+        value = int(self % 13 + 2)
         return Card(value, suit)
 
 

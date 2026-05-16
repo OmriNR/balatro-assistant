@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import IntEnum
 
-class Ranks(Enum):
+class Ranks(IntEnum):
     Hearth = 0
     Spade = 1
     Diamond = 2
